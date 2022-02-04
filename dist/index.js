@@ -8473,7 +8473,8 @@ const github = __nccwpck_require__(5438);
 
 try {
 	const issueNum = parseInt(core.getInput('issue-number'));
-	if (isNan(issueNum)) {
+	console.log("Issue number is" , issueNum);
+	if (isNaN(issueNum)) {
 		throw new Error(`Cannot convert ${issueNum} into an integer`);
 	}
 
