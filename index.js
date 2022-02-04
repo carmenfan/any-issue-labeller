@@ -8,7 +8,9 @@ try {
 		throw new Error(`Cannot convert ${issueNum} into an integer`);
 	}
 
-	const label = parseInt(core.getInput('label'));
+	const label = core.getInput('label');
+	if(!label)
+		throw new Error ("label cannot be empty");
 
 	console.log(`adding label ${label} to issue #${issueNum}`);
 	// Get the JSON webhook payload for the event that triggered the workflow
