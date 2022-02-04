@@ -8488,7 +8488,7 @@ const extractInputs = () => {
 
 	if(!label)
 		throw new Error ("token cannot be empty");
-	octokit = githib.getOctokit(token);
+	octokit = github.getOctokit(token);
 
 	return { issueNum, label };
 };
