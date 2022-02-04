@@ -34,7 +34,6 @@ try {
 	const { issueNum, label} = extractInputs();
 	console.log(`adding label ${label} to issue #${issueNum}`);
 
-	initOctoKit();
 	ensureLabelExists(label);
 
 	// ensure issue exists
