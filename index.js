@@ -3,7 +3,7 @@ const github = require('@actions/github');
 
 try {
 	const issueNum = parseInt(core.getInput('issue-number'));
-	if (isNan(issueNum)) {
+	if (isNaN(issueNum)) {
 		throw new Error(`Cannot convert ${issueNum} into an integer`);
 	}
 
