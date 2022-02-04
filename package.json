@@ -1,11 +1,13 @@
 {
+
   "name": "any-issue-labeller",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "lint": "eslint .",
-	"build": "ncc build index.js --license licenses.txt"
+	"build": "ncc build index.js --license licenses.txt",
+	"watch": "ncc build index.js --license licenses.txt -w"
   },
   "dependencies": {
     "@actions/core": "^1.6.0",
