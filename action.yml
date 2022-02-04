@@ -1,0 +1,12 @@
+name: 'Any issue labeller'
+description: 'Labels an issue'
+inputs:
+  issue-number:
+    description: 'issue number to label'
+    required: true
+  label:
+    description: 'label to apply to the issue'
+    required: true
+runs:
+  using: 'node14'
+  main: 'index.js'

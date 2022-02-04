@@ -1,0 +1,18 @@
+const core = require('@actions/core');
+const github = require('@actions/github');
+
+try {
+	const issueNum = parseInt(core.getInput('issue-number'));
+	if (isNan(issueNum)) {
+		throw new Error(`Cannot convert ${issueNum} into an integer`);
+	}
+
+	const label = parseInt(core.getInput('label'));
+
+	console.log(`adding label ${label} to issue #${issueNum}`);
+	// Get the JSON webhook payload for the event that triggered the workflow
+	const payload = JSON.stringify(github.context.payload, undefined, 2);
+	console.log(`The event payload: ${payload}`);
+} catch (error) {
+	core.setFailed(error.message);
+}
