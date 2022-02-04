@@ -8495,7 +8495,7 @@ const extractInputs = () => {
 
 
 const ensureLabelExists = (label) => {
-	console.dir(octokit.rest, {depth: 3});
+	console.dir(octokit.rest, {depth: 1});
 
 }
 
