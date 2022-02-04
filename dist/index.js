@@ -8471,7 +8471,9 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 
-try {
+let octokit;
+
+const extractInputs = () => {
 	const issueNum = parseInt(core.getInput('issue-number'));
 	console.log("Issue number is" , issueNum, " original value is ", core.getInput('issue-number'));
 	if (isNaN(issueNum)) {
@@ -8482,10 +8484,35 @@ try {
 	if(!label)
 		throw new Error ("label cannot be empty");
 
+	const token = core.getInput('github-token');
+
+	if(!label)
+		throw new Error ("token cannot be empty");
+	octokit = githib.getOctokit(token);
+
+	return { issueNum, label };
+};
+
+
+const ensureLabelExists = (label) => {
+	console.dir(octokit.rest, {depth: 3});
+
+}
+
+try {
+
+	const { issueNum, label} = extractInputs();
 	console.log(`adding label ${label} to issue #${issueNum}`);
+
+	initOctoKit();
+	ensureLabelExists(label);
+
+	// ensure issue exists
+
 	// Get the JSON webhook payload for the event that triggered the workflow
 	const payload = JSON.stringify(github.context.payload, undefined, 2);
 	console.log(`The event payload: ${payload}`);
+
 } catch (error) {
 	core.setFailed(error.message);
 }
