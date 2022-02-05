@@ -23,17 +23,35 @@ const extractInputs = () => {
 
 const ensureLabelExists = async (name) => {
 	try {
-		const { data } = await octokit.rest.issues.getLabel({
+		const { data } = await octokit.rest.issues.listLabelsForRepo({
 			owner: github.context.payload.repository.owner.name,
 			repo: github.context.payload.repository.name,
-			name: 'dlskfjds',
+		});
+
+		console.log(data);
+
+		await octokit.rest.issues.getLabel({
+			owner: github.context.payload.repository.owner.name,
+			repo: github.context.payload.repository.name,
+			name,
 
 		});
 	} catch ({ message }) {
 		throw new Error(`Failed to find label: ${message}`);
 	}
+};
 
-	console.log('labels', data);
+const ensureIssueExists = async (issue) => {
+	try {
+		await octokit.rest.issues.get({
+			owner: github.context.payload.repository.owner.name,
+			repo: github.context.payload.repository.name,
+			issue_number: issue,
+
+		});
+	} catch ({ message }) {
+		throw new Error(`Failed to find issue: ${message}`);
+	}
 };
 
 const run = async () => {
@@ -41,8 +59,7 @@ const run = async () => {
 	console.log(`adding label ${label} to issue #${issueNum}`);
 
 	await ensureLabelExists(label);
-
-	// ensure issue exists
+	await ensureIssueExists(issueNum);
 
 	// Get the JSON webhook payload for the event that triggered the workflow
 	const payload = JSON.stringify(github.context.payload, undefined, 2);
