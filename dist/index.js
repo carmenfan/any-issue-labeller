@@ -8492,12 +8492,16 @@ const extractInputs = () => {
 };
 
 const ensureLabelExists = async (name) => {
-	const { data } = await octokit.rest.issues.getLabel({
-		owner: github.context.payload.repository.owner.name,
-		repo: github.context.payload.repository.name,
-		name: 'dlskfjds',
+	try {
+		const { data } = await octokit.rest.issues.getLabel({
+			owner: github.context.payload.repository.owner.name,
+			repo: github.context.payload.repository.name,
+			name: 'dlskfjds',
 
-	});
+		});
+	} catch ({ message }) {
+		throw new Error(`Failed to find label: ${message}`);
+	}
 
 	console.log('labels', data);
 };
