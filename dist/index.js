@@ -8494,27 +8494,31 @@ const extractInputs = () => {
 };
 
 
-const ensureLabelExists = (label) => {
-	console.dir(octokit.rest, {depth: 1});
+const ensureLabelExists = async (label) => {
+	const {data} = await octokit.rest.issues.listLabelsForRepo({
+		owner: github.context.payload.repository.owner.name,
+		repo: github.context.payload.repository.name,
 
+	});
+
+	console.log("labels", data);
 }
 
-try {
-
+const run = async () => {
 	const { issueNum, label} = extractInputs();
 	console.log(`adding label ${label} to issue #${issueNum}`);
 
-	ensureLabelExists(label);
+	await ensureLabelExists(label);
 
 	// ensure issue exists
 
 	// Get the JSON webhook payload for the event that triggered the workflow
 	const payload = JSON.stringify(github.context.payload, undefined, 2);
 	console.log(`The event payload: ${payload}`);
-
-} catch (error) {
-	core.setFailed(error.message);
 }
+run().catch((err) => {
+  core.setFailed(err.message);
+});
 
 })();
 

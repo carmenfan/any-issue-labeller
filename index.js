@@ -26,8 +26,8 @@ const extractInputs = () => {
 
 const ensureLabelExists = async (label) => {
 	const {data} = await octokit.rest.issues.listLabelsForRepo({
-		github.context.payload.repository.owner.name,
-		github.context.payload.repository.name,
+		owner: github.context.payload.repository.owner.name,
+		repo: github.context.payload.repository.name,
 
 	});
 
