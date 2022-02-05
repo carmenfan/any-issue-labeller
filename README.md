@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to apply label onto an issue
     steps:
-      - uses: carmenfan/any-issue-labeller@main
+      - uses: carmenfan/any-issue-labeller@v1.0
         with:
           issue-number: 10
           label: "invalid"
