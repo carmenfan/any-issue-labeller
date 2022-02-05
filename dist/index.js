@@ -8493,13 +8493,6 @@ const extractInputs = () => {
 
 const ensureLabelExists = async (name) => {
 	try {
-		const { data } = await octokit.rest.issues.listLabelsForRepo({
-			owner: github.context.payload.repository.owner.name,
-			repo: github.context.payload.repository.name,
-		});
-
-		console.log(data);
-
 		await octokit.rest.issues.getLabel({
 			owner: github.context.payload.repository.owner.name,
 			repo: github.context.payload.repository.name,
@@ -8524,6 +8517,20 @@ const ensureIssueExists = async (issue) => {
 	}
 };
 
+const assignLabelToIssue = async (issue, label) => {
+	try {
+		await octokit.rest.issues.addLabels({
+			owner: github.context.payload.repository.owner.name,
+			repo: github.context.payload.repository.name,
+			issue_number: issue,
+			labels: [label],
+
+		});
+	} catch ({ message }) {
+		throw new Error(`Failed to assign label ${label} issue #${issue}: ${message}`);
+	}
+};
+
 const run = async () => {
 	const { issueNum, label } = extractInputs();
 	console.log(`adding label ${label} to issue #${issueNum}`);
@@ -8531,9 +8538,7 @@ const run = async () => {
 	await ensureLabelExists(label);
 	await ensureIssueExists(issueNum);
 
-	// Get the JSON webhook payload for the event that triggered the workflow
-	const payload = JSON.stringify(github.context.payload, undefined, 2);
-	console.log(`The event payload: ${payload}`);
+	await assignLabelToIssue(issueNum, label);
 };
 run().catch((err) => {
 	core.setFailed(err.message);
