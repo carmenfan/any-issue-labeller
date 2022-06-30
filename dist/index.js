@@ -8473,6 +8473,9 @@ const github = __nccwpck_require__(5438);
 
 let octokit;
 
+const owner = github.context.payload.repository.owner.name || github.context.payload.repository.owner.login;
+const repoName = github.context.payload.repository.name;
+
 const extractInputs = () => {
 	const issueNum = parseInt(core.getInput('issue-number'), 10);
 	console.log('Issue number is', issueNum, ' original value is ', core.getInput('issue-number'));
@@ -8494,8 +8497,8 @@ const extractInputs = () => {
 const ensureLabelExists = async (name) => {
 	try {
 		await octokit.rest.issues.getLabel({
-			owner: github.context.payload.repository.owner.name,
-			repo: github.context.payload.repository.name,
+			owner,
+			repo: repoName,
 			name,
 
 		});
@@ -8507,8 +8510,8 @@ const ensureLabelExists = async (name) => {
 const ensureIssueExists = async (issue) => {
 	try {
 		await octokit.rest.issues.get({
-			owner: github.context.payload.repository.owner.name,
-			repo: github.context.payload.repository.name,
+			owner,
+			repo: repoName,
 			issue_number: issue,
 
 		});
@@ -8520,8 +8523,8 @@ const ensureIssueExists = async (issue) => {
 const assignLabelToIssue = async (issue, label) => {
 	try {
 		await octokit.rest.issues.addLabels({
-			owner: github.context.payload.repository.owner.name,
-			repo: github.context.payload.repository.name,
+			owner,
+			repo: repoName,
 			issue_number: issue,
 			labels: [label],
 
